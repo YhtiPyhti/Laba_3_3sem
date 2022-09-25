@@ -1,0 +1,51 @@
+﻿<Window x:Class="WpfApp1.UserSerDeser"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp1"
+        mc:Ignorable="d"
+        Title="Serialization or deserialization" Height="400" Width="600">
+    <Window.Resources>
+
+        <Style TargetType="Button">
+            <Setter Property="FontFamily" Value="Verdana" />
+            <Setter Property="Background" Value="#b4a284" />
+            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="Margin" Value="20" />
+        </Style>
+
+        <Style TargetType="TextBox">
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="Margin" Value="5 5 5 5"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="MinHeight" Value="20"/>
+            <Setter Property="MinWidth" Value="250"/>
+        </Style>
+
+        <Style TargetType="TextBlock">
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="Margin" Value="5 5 5 5"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="MinHeight" Value="20"/>
+            <Setter Property="MinWidth" Value="250"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+    </Window.Resources>
+    <Grid>
+        <Border MinWidth="400" Margin="15" Background="#f6ead4" VerticalAlignment="Center" Padding="30" MaxHeight="550" CornerRadius="20">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="30" Color="LightGray" ShadowDepth="0"></DropShadowEffect>
+            </Border.Effect>
+
+            <StackPanel>
+                <TextBlock Text="What do you want?" FontSize="30" FontWeight="Bold" Margin="0 0 0 20" HorizontalAlignment="Center" Width="280"/>
+                <Button Content="Serialization" Margin="0 20 0 20" MinHeight="30" Width="505" Click="Button_Ser_Click"/>
+                <Button Content="Deserialization" Margin="0 20 0 20" MinHeight="30" Width="505" Click="Button_Des_Click"/>
+                <Button Content="Back" Margin="0 20 0 20" MinHeight="30" Width="505" Click="Button_BackMain_Click"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>
