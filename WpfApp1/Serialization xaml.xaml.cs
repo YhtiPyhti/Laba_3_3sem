@@ -1,34 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-
+﻿using System.Windows;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Xml.Serialization;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Collections.Generic;
+using Excel = Microsoft.Office.Interop.Excel;
+
 
 namespace WpfApp1
 {
-    /// <summary>
-    /// Логика взаимодействия для Serialization_xaml.xaml
-    /// </summary>
-    public partial class Serialization_xaml : Window
+    public partial class Serialization_xaml : System.Windows.Window
     {
-        User person;
+        List<User> person;
         string PATH = "C:\\Users\\Sergei\\Desktop\\person";
 
-        public Serialization_xaml(User person_from_main)
+        public Serialization_xaml(List<User> person_from_main)
         {
             InitializeComponent();
             person = person_from_main;
@@ -50,7 +36,7 @@ namespace WpfApp1
         private void Button_XML_Click(object sender, RoutedEventArgs e)
         {
 
-            XmlSerializer writer = new XmlSerializer(typeof(User));
+            XmlSerializer writer = new XmlSerializer(typeof(List<User>));
 
             using (FileStream fs = new FileStream(PATH + ".xml", FileMode.OpenOrCreate))
             {
@@ -69,13 +55,30 @@ namespace WpfApp1
             inputRes.Text += (jsonString);
 
             inputRes.Text = "JSON serialization was successful";
+
+            var excelApp = new Excel.Application();
+            excelApp.Workbooks.Add();
+            Excel.Worksheet worksheet = (Excel.Worksheet)excelApp.ActiveSheet;
+
+            worksheet.Range["A1"].Value = "Login";
+            worksheet.Range["B1"].Value = "Password";
+            worksheet.Range["C1"].Value = "Email";
+
+            for (int i = 0; i < person.Count; i++)
+            {
+                worksheet.Cells[i + 2, 1] = person[i].login;
+                worksheet.Cells[i + 2, 2] = person[i].password;
+                worksheet.Cells[i + 2, 3] = person[i].email;
+            }
+            excelApp.Visible = true;
+
         }
 
         private void Button_BackSer_Click(object sender, RoutedEventArgs e)
         {
             UserSerDeser windowSerDesr = new UserSerDeser(person);
             windowSerDesr.Show();
-            Hide();
+            Close();
         }
     }
 }

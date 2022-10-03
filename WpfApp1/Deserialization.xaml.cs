@@ -1,24 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Xml.Serialization;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Collections.Generic;
+
+
 
 namespace WpfApp1
 {
@@ -29,7 +17,7 @@ namespace WpfApp1
 
     public partial class Deserialization : Window
     {
-        User person;
+        List<User> person;
         string PATH = "C:\\Users\\Sergei\\Desktop\\person";
         public Deserialization()
         {
@@ -43,9 +31,11 @@ namespace WpfApp1
 
             using (FileStream fs = new FileStream(PATH + ".dat", FileMode.OpenOrCreate))
             {
-               person = (User)formatter.Deserialize(fs);
-
-               inputRes.Text = ($"*Bin* User: {person.login} password: {person.password} email: {person.email}");
+                person = (List<User>)formatter.Deserialize(fs);
+                foreach (var person1 in person)
+                {
+                    inputRes.Text += ($"*Bin* User: {person1.login} password: {person1.password} email: {person1.email}");
+                }
             }
         }
 
@@ -56,25 +46,33 @@ namespace WpfApp1
             // десериализуем объект
             using (FileStream fs = new FileStream(PATH + ".xml", FileMode.OpenOrCreate))
             {
-                User person = xmlSerializer.Deserialize(fs) as User;
-                inputRes.Text = ($"*XML* User: {person.login} password: {person.password} email: {person.email}");
+                List<User> person = xmlSerializer.Deserialize(fs) as List<User>;
+                foreach (var person1 in person)
+                {
+                    inputRes.Text += ($"*XML* User: {person1.login} password: {person1.password} email: {person1.email}");
+                }
             }
         }
 
-        private void Button_JSON_Click(object sender, RoutedEventArgs e)
-        {
-            using (FileStream fs = new FileStream(PATH + ".json", FileMode.OpenOrCreate))
+            private void Button_JSON_Click(object sender, RoutedEventArgs e)
             {
-                User person = JsonSerializer.Deserialize<User>(fs);
-                inputRes.Text = ($"*JSON* User: {person.login} password: {person.password} email: {person.email}");
-            }
-        }
 
-        private void Button_BackSerDes_Click(object sender, RoutedEventArgs e)
-        {
-            UserSerDeser windowSerDesr = new UserSerDeser(person);
-            windowSerDesr.Show();
-            Hide();
-        }
-    }
+                using (FileStream fs = new FileStream(PATH + ".json", FileMode.OpenOrCreate))
+                {
+                    List<User> person = JsonSerializer.Deserialize<List<User>>(fs);
+                    foreach (var person1 in person)
+                    {
+                        inputRes.Text += ($"*JSON* User: {person1.login} password: {person1.password} email: {person1.email}");
+                    }
+                }
+            }
+
+            private void Button_BackSerDes_Click(object sender, RoutedEventArgs e)
+            {
+                UserSerDeser windowSerDesr = new UserSerDeser(person);
+                windowSerDesr.Show();
+                Close();
+            }
+        
+    } 
 }

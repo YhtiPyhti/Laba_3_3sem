@@ -1,17 +1,7 @@
-﻿using System;
+﻿using System.Windows;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+
 
 namespace WpfApp1
 {
@@ -20,6 +10,7 @@ namespace WpfApp1
     /// </summary>
     public partial class MainWindow : Window
     {
+        static List<User> userPeople = new List<User>();
         public MainWindow()
         {
             InitializeComponent();
@@ -37,12 +28,12 @@ namespace WpfApp1
                 textBoxLogin.ToolTip = "Form empty";
                 textBoxLogin.Background = Brushes.DarkRed;
             }
-            else if (pass != repPass || pass.Length < 1 || repPass.Length < 1)
+            else  if (pass != repPass || pass.Length < 1 || repPass.Length < 1)
             {
                 textBoxPassword.ToolTip = "Passwords don't match";
                 textBoxRepPassword.Background = Brushes.DarkRed;
             }
-            else if(!email.Contains("@") || !email.Contains(".") || email.Length < 1)
+            else if(!email.Contains('@') || !email.Contains('.') || email.Length < 5)
             {
                 textBoxEmail.ToolTip = "Incorrect email";
                 textBoxEmail.Background = Brushes.DarkRed;
@@ -62,11 +53,12 @@ namespace WpfApp1
                 textBoxEmail.Background = Brushes.Transparent;
 
                 User person = new User(login, pass, email);
+                userPeople.Add(person);
 
-                UserSerDeser windowSerDesr = new UserSerDeser(person);
-                windowSerDesr.Owner = this;
+                UserSerDeser windowSerDesr = new UserSerDeser(userPeople);
+                
                 windowSerDesr.Show();
-                Hide();
+                Close();
             }
         }
     }
